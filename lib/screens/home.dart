@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:the_daily_app/constants/color.dart';
 import 'package:the_daily_app/screens/search.dart';
 import 'package:the_daily_app/widgets/custom_appbar.dart';
+import 'package:the_daily_app/widgets/last_article.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
-
   @override
   State<Home> createState() => _HomeState();
 }
@@ -27,20 +27,31 @@ class _HomeState extends State<Home> {
       ),
       backgroundColor: glaciarWhite,
       body: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-          child: SafeArea(
-              child: Column(
-            children: [
-              Text(
-                "Latest articles",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w700,
-                  color: nigthBlack,
-                ),
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Latest Article',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: nigthBlack,
               ),
-            ],
-          ))),
+            ),
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: LastArticle(
+                imageUrl:
+                    "https://www.rmol.co/wp-content/uploads/2023/05/16tesla-fckq-facebookJumbo-4859007.jpg",
+                description:
+                    "Tesla Changed A Deadline For Investor Proposals, Angering Activists | RMOL",
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

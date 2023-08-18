@@ -25,14 +25,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: TextStyle(
-          fontSize: 20,
-          color: const Color(0xff333C49).withOpacity(0.4),
+          fontSize: 16,
+          color: const Color(0xff333C49).withOpacity(0.5),
         ),
       ),
       elevation: 0,
       backgroundColor: glaciarWhite,
       centerTitle: true,
-      toolbarHeight: kToolbarHeight + 5,
+      toolbarHeight: kToolbarHeight + 2,
       leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
           child: IconButton(
