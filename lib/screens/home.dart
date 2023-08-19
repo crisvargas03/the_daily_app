@@ -5,6 +5,8 @@ import 'package:the_daily_app/screens/search.dart';
 import 'package:the_daily_app/widgets/custom_appbar.dart';
 import 'package:the_daily_app/widgets/last_article.dart';
 
+import '../widgets/article_item.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
   @override
@@ -21,7 +23,9 @@ class _HomeState extends State<Home> {
         rightButtonAction: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Search()),
+            MaterialPageRoute(
+              builder: (context) => const Search(),
+            ),
           );
         },
       ),
@@ -47,6 +51,30 @@ class _HomeState extends State<Home> {
                     "https://www.rmol.co/wp-content/uploads/2023/05/16tesla-fckq-facebookJumbo-4859007.jpg",
                 description:
                     "Tesla Changed A Deadline For Investor Proposals, Angering Activists | RMOL",
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Popular Articles',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: Column(
+                  children: [
+                    // for (var article in articlesList)
+                    ArticleItem(
+                      imageUrl:
+                          "https://www.rmol.co/wp-content/uploads/2023/05/16tesla-fckq-facebookJumbo-4859007.jpg", // article.imageUrl,
+                      title: "article.title",
+                      date: "article.date",
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
