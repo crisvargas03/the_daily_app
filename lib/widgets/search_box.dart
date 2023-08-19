@@ -4,7 +4,7 @@ import 'package:the_daily_app/constants/color.dart';
 
 Widget searchBox() {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+    padding: const EdgeInsets.only(right: 20),
     child: Column(
       children: [
         Container(
