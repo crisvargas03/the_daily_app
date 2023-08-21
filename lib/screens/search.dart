@@ -5,6 +5,7 @@ import "package:the_daily_app/widgets/article_item.dart";
 import "../models/article.dart";
 import "../services/api_service.dart";
 import "../widgets/custom_appbar.dart";
+import "details.dart";
 import "home.dart";
 
 class Search extends StatefulWidget {
@@ -139,10 +140,20 @@ class _SearchState extends State<Search> {
                   itemCount: articleList.length,
                   itemBuilder: (context, index) {
                     var article = articleList[index];
-                    return ArticleItem(
-                      imageUrl: article.image.toString(),
-                      title: article.title.toString(),
-                      date: article.date.toString(),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Details(article: article),
+                          ),
+                        );
+                      },
+                      child: ArticleItem(
+                        imageUrl: article.image.toString(),
+                        title: article.title.toString(),
+                        date: article.date.toString(),
+                      ),
                     );
                   },
                 ),
