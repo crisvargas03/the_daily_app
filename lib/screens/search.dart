@@ -14,15 +14,31 @@ class Search extends StatefulWidget {
   State<Search> createState() => _SearchState();
 }
 
-List<Article> articleList = [];
+enum ArticleState {
+  loading,
+  loaded,
+  error,
+}
 
 class _SearchState extends State<Search> {
+  List<Article> articleList = [];
+  ArticleState articleState = ArticleState.loading;
+
   @override
   void initState() {
     super.initState();
+    setState(() {
+      articleState = ArticleState.loading;
+    });
+
     fetchArticlesWithBody().then((articles) {
       setState(() {
         articleList = articles;
+        articleState = ArticleState.loaded;
+      });
+    }).catchError((error) {
+      setState(() {
+        articleState = ArticleState.error;
       });
     });
   }
@@ -113,19 +129,24 @@ class _SearchState extends State<Search> {
                 ),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: articleList.length,
-                itemBuilder: (context, index) {
-                  var article = articleList[index];
-                  return ArticleItem(
-                    imageUrl: article.image.toString(),
-                    title: article.title.toString(),
-                    date: article.date.toString(),
-                  );
-                },
+            if (articleState == ArticleState.loading)
+              const CircularProgressIndicator(),
+            if (articleState == ArticleState.error)
+              const Text('Error fetching articles'),
+            if (articleState == ArticleState.loaded)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: articleList.length,
+                  itemBuilder: (context, index) {
+                    var article = articleList[index];
+                    return ArticleItem(
+                      imageUrl: article.image.toString(),
+                      title: article.title.toString(),
+                      date: article.date.toString(),
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         ),
       ),

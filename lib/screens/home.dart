@@ -7,6 +7,7 @@ import 'package:the_daily_app/widgets/custom_appbar.dart';
 import 'package:the_daily_app/widgets/last_article.dart';
 import '../services/api_service.dart';
 import '../widgets/article_item.dart';
+import 'details.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -98,10 +99,20 @@ class _HomeState extends State<Home> {
                   itemCount: articleList.length,
                   itemBuilder: (context, index) {
                     var article = articleList[index];
-                    return ArticleItem(
-                      imageUrl: article.image.toString(),
-                      title: article.title.toString(),
-                      date: article.date.toString(),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Details(article: article),
+                          ),
+                        );
+                      },
+                      child: ArticleItem(
+                        imageUrl: article.image.toString(),
+                        title: article.title.toString(),
+                        date: article.date.toString(),
+                      ),
                     );
                   },
                 ),
