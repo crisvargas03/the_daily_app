@@ -7,24 +7,41 @@ import 'package:the_daily_app/widgets/custom_appbar.dart';
 import 'package:the_daily_app/widgets/last_article.dart';
 import '../services/api_service.dart';
 import '../widgets/article_item.dart';
+import 'details.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
 
-List<Article> articleList = [];
-Article topOne = Article();
+enum ArticleState {
+  loading,
+  loaded,
+  error,
+}
 
 class _HomeState extends State<Home> {
+  ArticleState articleState = ArticleState.loading;
+  Article topOne = Article();
+  List<Article> articleList = [];
+
   @override
   void initState() {
     super.initState();
+    setState(() {
+      articleState = ArticleState.loading;
+    });
+
     fetchArticlesWithBody().then((articles) {
       setState(() {
         articleList = articles;
-        topOne = articleList.first;
+        topOne = articleList.isNotEmpty ? articleList.first : Article();
+        articleState = ArticleState.loaded;
+      });
+    }).catchError((error) {
+      setState(() {
+        articleState = ArticleState.error;
       });
     });
   }
@@ -59,14 +76,11 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(height: 10),
-            Align(
-                alignment: Alignment.centerRight,
-                child: Expanded(
-                  child: LastArticle(
-                    imageUrl: topOne.image.toString(),
-                    description: topOne.title.toString(),
-                  ),
-                )),
+            if (articleState == ArticleState.loaded)
+              LastArticle(
+                imageUrl: topOne.image.toString(),
+                description: topOne.title.toString(),
+              ),
             const SizedBox(height: 20),
             const Text(
               'Popular Articles',
@@ -75,19 +89,34 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: articleList.length,
-                itemBuilder: (context, index) {
-                  var article = articleList[index];
-                  return ArticleItem(
-                    imageUrl: article.image.toString(),
-                    title: article.title.toString(),
-                    date: article.date.toString(),
-                  );
-                },
+            if (articleState == ArticleState.loading)
+              const CircularProgressIndicator(),
+            if (articleState == ArticleState.error)
+              const Text('Error fetching articles'),
+            if (articleState == ArticleState.loaded)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: articleList.length,
+                  itemBuilder: (context, index) {
+                    var article = articleList[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Details(article: article),
+                          ),
+                        );
+                      },
+                      child: ArticleItem(
+                        imageUrl: article.image.toString(),
+                        title: article.title.toString(),
+                        date: article.date.toString(),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         ),
       ),
